@@ -4,11 +4,10 @@
     using Microsoft.CodeAnalysis.CodeFixes;
     using Microsoft.CodeAnalysis.Diagnostics;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-
     using TestHelper;
 
     [TestClass]
-    public class DataMemberPresenceAnalyzerTests : CodeFixVerifier
+    public class DataContractNameAnalyzerTests : CodeFixVerifier
     {
         [TestMethod]
         public void ShouldNotGenerateDiagForEmpty()
@@ -19,9 +18,9 @@
         }
 
         [TestMethod]
-        public void ShouldNotGenerateDiagWhenNoProperties()
+        public void ShouldNotGenerateDiagWhenNameAndDataContractEquals()
         {
-            var test = @"
+            var code = @"
             namespace DataContractAnalyzer.Test
             {
                 using System.Runtime.Serialization;
@@ -31,21 +30,21 @@
                 {
                 }
             }";
-            VerifyCSharpDiagnostic(test);
+
+            VerifyCSharpDiagnostic(code);
         }
 
         [TestMethod]
-        public void ShouldNotGenerateDiagForExtensionObjectData()
+        public void ShouldNotGenerateDiagWhenNoNameParameterPresent()
         {
             var code = @"
             namespace DataContractAnalyzer.Test
             {
                 using System.Runtime.Serialization;
 
-                [DataContract]
-                public class Example : IExtensibleDataObject
+                [DataContract(Namespace = ""http://abc/com"")]
+                public class ExampleDto
                 {
-                    public ExtensionDataObject ExtensionData { get; set; }
                 }
             }";
 
@@ -53,28 +52,24 @@
         }
 
         [TestMethod]
-        public void ShouldNotGenerateDiagForNotPublicProperties()
+        public void ShouldNotGenerateDiagWhenNameParameterIsWritten()
         {
             var code = @"
             namespace DataContractAnalyzer.Test
             {
                 using System.Runtime.Serialization;
 
-                [DataContract]
-                public class Example : IExtensibleDataObject
+                [DataContract(Nam , Namespace = ""http://abc/com"")]
+                public class ExampleDto
                 {
-                    protected string Data { get; set; }
-
-                    private int Value { get; set; }
                 }
             }";
 
             VerifyCSharpDiagnostic(code);
         }
 
-        //Diagnostic and CodeFix both triggered and checked for
         [TestMethod]
-        public void ShouldGenerateDiagForMissingDataMemberOnPublicProperty()
+        public void ShouldGenerateDiagForNameMismatch()
         {
             var test = @"
             namespace DataContractAnalyzer.Test
@@ -84,20 +79,19 @@
                 [DataContract(Name = ""Abc"", Namespace = ""http://abc/com"")]
                 public class ExampleDto
                 {
-                    public string Value { get; set; }
                 }
             }";
 
             var expected = new DiagnosticResult
-                               {
-                                   Id = DataMemberPresenceAnalyzer.DiagnosticId,
-                                   Message = "DataMember attribute is missing",
-                                   Severity = DiagnosticSeverity.Error,
-                                   Locations =
-                                       new[] {
-                                                 new DiagnosticResultLocation("Test0.cs", 9, 21)
-                                             }
-                               };
+            {
+                Id = DataContractNameAnalyzer.DiagnosticId,
+                Message = "Class name 'ExampleDto' is inconsistent with DataContract name parameter",
+                Severity = DiagnosticSeverity.Error,
+                Locations =
+                    new[] {
+                            new DiagnosticResultLocation("Test0.cs", 6, 17)
+                        }
+            };
 
             VerifyCSharpDiagnostic(test, expected);
         }
@@ -109,7 +103,7 @@
 
         protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
         {
-            return new DataMemberPresenceAnalyzer();
+            return new DataContractNameAnalyzer();
         }
     }
 }

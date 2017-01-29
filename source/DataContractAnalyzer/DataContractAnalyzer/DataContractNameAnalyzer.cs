@@ -1,28 +1,27 @@
-using System.Collections.Immutable;
-using System.Linq;
-
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Diagnostics;
-
 namespace DataContractAnalyzer
 {
+    using System.Collections.Immutable;
+    using Microsoft.CodeAnalysis;
+    using Microsoft.CodeAnalysis.CSharp;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
+    using Microsoft.CodeAnalysis.Diagnostics;
+
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public class DataContractNameAnalyzer : DiagnosticAnalyzer
     {
-        public const string DiagnosticId = "DataContractNameAnalyzer";
+        public const string DiagnosticId = "DC0001";
 
-        // You can change these strings in the Resources.resx file. If you do not want your analyzer to be localize-able, you can use regular strings for Title and MessageFormat.
-        // See https://github.com/dotnet/roslyn/blob/master/docs/analyzers/Localizing%20Analyzers.md for more on localization
-        private static readonly LocalizableString Title = new LocalizableResourceString(nameof(Resources.AnalyzerTitle), Resources.ResourceManager, typeof(Resources));
-        private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(Resources.AnalyzerMessageFormat), Resources.ResourceManager, typeof(Resources));
-        private static readonly LocalizableString Description = new LocalizableResourceString(nameof(Resources.AnalyzerDescription), Resources.ResourceManager, typeof(Resources));
-        private const string Category = "Naming";
+        private const string Category = "DataContract";
 
-        private static DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category, DiagnosticSeverity.Error, isEnabledByDefault: true, description: Description);
+        private static readonly LocalizableString Title = new LocalizableResourceString(nameof(Resources.DataContractAnalyzerTitle), Resources.ResourceManager, typeof(Resources));
 
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get { return ImmutableArray.Create(Rule); } }
+        private static readonly LocalizableString MessageFormat = new LocalizableResourceString(nameof(Resources.DataContractAnalyzerMessageFormat), Resources.ResourceManager, typeof(Resources));
+
+        private static readonly LocalizableString Description = new LocalizableResourceString(nameof(Resources.DataContractAnalyzerDescription), Resources.ResourceManager, typeof(Resources));
+
+        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category, DiagnosticSeverity.Error, isEnabledByDefault: true, description: Description);
+
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
         public override void Initialize(AnalysisContext context)
         {
@@ -36,29 +35,24 @@ namespace DataContractAnalyzer
             var className = declaration.Identifier.ValueText;
 
             var dataContractAttribute =
-                declaration
-                .AttributeLists
-                .SelectMany(d => d.Attributes)
-                .FirstOrDefault(d => (d.Name as IdentifierNameSyntax).Identifier.ValueText == "DataContract");
+                declaration.FindAttributeWithName(Constants.Attributes.DataCotnractAttributeName);
 
             if (dataContractAttribute == null)
             {
                 return;
             }
 
-            var nameParameter = dataContractAttribute.ArgumentList.Arguments.FirstOrDefault(a => a.NameEquals.Name.Identifier.ValueText == "Name");
-            
-            if (nameParameter == null)
+            var nameParameter =
+                dataContractAttribute.FindAttributeParamterWithName(
+                    Constants.Attributes.DataCotnractAttributeNameParameterName);
+
+            var nameParamterValue = nameParameter.GetAttributeParamterLiteralValue();
+
+            if (nameParamterValue == className)
             {
                 return;
             }
 
-            if ((nameParameter.Expression as LiteralExpressionSyntax).Token.ValueText == className)
-            {
-                return;
-            }
-
-            // For all such symbols, produce a diagnostic.
             var diagnostic = Diagnostic.Create(
                 Rule, 
                 context.Node.GetLocation(), 

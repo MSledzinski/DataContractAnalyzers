@@ -117,25 +117,31 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AnalyzerDescription" xml:space="preserve">
+  <data name="DataContractAnalyzerDescription" xml:space="preserve">
     <value>DataContract Name and class name are the same</value>
     <comment>An optional longer localizable description of the diagnostic.</comment>
   </data>
-  <data name="AnalyzerMessageFormat" xml:space="preserve">
+  <data name="DataContractAnalyzerMessageFormat" xml:space="preserve">
     <value>Class name '{0}' is inconsistent with DataContract name parameter</value>
     <comment>The format-able message the diagnostic displays.</comment>
   </data>
-  <data name="AnalyzerTitle" xml:space="preserve">
+  <data name="DataContractAnalyzerTitle" xml:space="preserve">
     <value>DataContract Name and class name are the same</value>
     <comment>The title of the diagnostic.</comment>
   </data>
-  <data name="MemberDescription" xml:space="preserve">
-    <value>DataMemberpresnet in DataContract</value>
+  <data name="DataContractFixTitle" xml:space="preserve">
+    <value>Change DataContract name parameter value</value>
   </data>
-  <data name="MemberMessageFormat" xml:space="preserve">
+  <data name="DataMemberDescription" xml:space="preserve">
+    <value>DataMember attribute present in DataCotnract</value>
+  </data>
+  <data name="DataMemberFixTitle" xml:space="preserve">
+    <value>Add DataMember attribute</value>
+  </data>
+  <data name="DataMemberMessageFormat" xml:space="preserve">
     <value>DataMember attribute is missing</value>
   </data>
-  <data name="MembersAnalyzerTitle" xml:space="preserve">
+  <data name="DataMembersAnalyzerTitle" xml:space="preserve">
     <value>DataMemberpresnet in DataContract</value>
   </data>
 </root>

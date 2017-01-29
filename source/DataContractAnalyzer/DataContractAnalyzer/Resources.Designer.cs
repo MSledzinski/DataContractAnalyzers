@@ -64,54 +64,72 @@ namespace DataContractAnalyzer {
         /// <summary>
         ///   Looks up a localized string similar to DataContract Name and class name are the same.
         /// </summary>
-        internal static string AnalyzerDescription {
+        internal static string DataContractAnalyzerDescription {
             get {
-                return ResourceManager.GetString("AnalyzerDescription", resourceCulture);
+                return ResourceManager.GetString("DataContractAnalyzerDescription", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Class name &apos;{0}&apos; is inconsistent with DataContract name parameter.
         /// </summary>
-        internal static string AnalyzerMessageFormat {
+        internal static string DataContractAnalyzerMessageFormat {
             get {
-                return ResourceManager.GetString("AnalyzerMessageFormat", resourceCulture);
+                return ResourceManager.GetString("DataContractAnalyzerMessageFormat", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to DataContract Name and class name are the same.
         /// </summary>
-        internal static string AnalyzerTitle {
+        internal static string DataContractAnalyzerTitle {
             get {
-                return ResourceManager.GetString("AnalyzerTitle", resourceCulture);
+                return ResourceManager.GetString("DataContractAnalyzerTitle", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DataMemberpresnet in DataContract.
+        ///   Looks up a localized string similar to Change DataContract name parameter value.
         /// </summary>
-        internal static string MemberDescription {
+        internal static string DataContractFixTitle {
             get {
-                return ResourceManager.GetString("MemberDescription", resourceCulture);
+                return ResourceManager.GetString("DataContractFixTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DataMember attribute present in DataCotnract.
+        /// </summary>
+        internal static string DataMemberDescription {
+            get {
+                return ResourceManager.GetString("DataMemberDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add DataMember attribute.
+        /// </summary>
+        internal static string DataMemberFixTitle {
+            get {
+                return ResourceManager.GetString("DataMemberFixTitle", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to DataMember attribute is missing.
         /// </summary>
-        internal static string MemberMessageFormat {
+        internal static string DataMemberMessageFormat {
             get {
-                return ResourceManager.GetString("MemberMessageFormat", resourceCulture);
+                return ResourceManager.GetString("DataMemberMessageFormat", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to DataMemberpresnet in DataContract.
         /// </summary>
-        internal static string MembersAnalyzerTitle {
+        internal static string DataMembersAnalyzerTitle {
             get {
-                return ResourceManager.GetString("MembersAnalyzerTitle", resourceCulture);
+                return ResourceManager.GetString("DataMembersAnalyzerTitle", resourceCulture);
             }
         }
     }

@@ -32,8 +32,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Constants.cs" />
+    <Compile Include="DataContractNameCodeFixProvider.cs" />
     <Compile Include="SyntaxExtensions.cs" />
-    <Compile Include="CodeFixProvider.cs" />
+    <Compile Include="DataMemberPresenceCodeFixProvider.cs" />
     <Compile Include="DataContractNameAnalyzer.cs" />
     <Compile Include="DataMemberPresenceAnalyzer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
